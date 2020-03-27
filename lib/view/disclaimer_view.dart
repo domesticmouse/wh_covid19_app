@@ -103,8 +103,9 @@ class _DisclaimerViewState extends State<DisclaimerView>
     );
 
     return FutureBuilder<bool>(
-        future: _checkAgreed(),
-        builder: (context, snapshot) {
+      future: _checkAgreed(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -152,7 +153,13 @@ class _DisclaimerViewState extends State<DisclaimerView>
                     ],
                   ),
           );
-        });
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
   }
 
   Future<bool> _checkAgreed() async {
