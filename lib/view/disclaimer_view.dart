@@ -34,50 +34,9 @@ class _DisclaimerViewState extends State<DisclaimerView>
     ),
   );
 
-  // Floating container indicating to scroll down to agree
-  final _scrollDownToAgree = IgnorePointer(
-    child: Container(
-      decoration: const BoxDecoration(
-          color: AppColors.green50,
-          borderRadius: BorderRadius.all(Radius.circular(50))),
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      child: const Text(
-        'Scroll down to agree',
-        style: AppStyles.textLegal,
-        textAlign: TextAlign.center,
-      ),
-    ),
-  );
-
-  // Floating container indicating to scroll down
-  final _scrollDown = IgnorePointer(
-    child: Container(
-      decoration: const BoxDecoration(
-          color: AppColors.green50,
-          borderRadius: BorderRadius.all(Radius.circular(50))),
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      child: const Text(
-        'Scroll down',
-        style: AppStyles.textP,
-        textAlign: TextAlign.center,
-      ),
-    ),
-  );
-
-  AnimationController _animationController;
-  Animation<double> _animation;
-
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _animation =
-        Tween<double>(begin: 1.0, end: 0.0).animate(_animationController);
   }
 
   @override
@@ -118,33 +77,14 @@ class _DisclaimerViewState extends State<DisclaimerView>
                 style: AppStyles.textH5,
               ),
             ),
-            body: MediaQuery.of(context).size.height < 600
-                ? Theme(
-                    data: ThemeData(accentColor: AppColors.green500),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        NotificationListener<ScrollUpdateNotification>(
-                          child: ListView(
-                            children: <Widget>[
-                              _content,
-                              if (!snapshot.data) _agreeButton else _agreedText,
-                            ],
-                          ),
-                          onNotification: (scrollNotification) {
-                            _animationController.forward();
-                            return true;
-                          },
-                        ),
-                        FadeTransition(
-                            opacity: _animation,
-                            child: !snapshot.data
-                                ? _scrollDownToAgree
-                                : _scrollDown)
-                      ],
-                    ),
-                  )
-                : Column(
+            body: Theme(
+              data: Theme.of(context).copyWith(
+                accentColor: AppColors.green500,
+                highlightColor: AppColors.green50,
+              ),
+              child: Scrollbar(
+                child: SingleChildScrollView(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
@@ -152,6 +92,9 @@ class _DisclaimerViewState extends State<DisclaimerView>
                       if (!snapshot.data) _agreeButton else _agreedText,
                     ],
                   ),
+                ),
+              ),
+            ),
           );
         } else {
           return const Center(
