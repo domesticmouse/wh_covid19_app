@@ -1,3 +1,6 @@
+---- Sunday 29th March, 2020 ----
+* Applied Infographics Reusable Screen to Algorithm Screen
+
 ---- Friday 27th March, 2020 ----
 * Added Screen for PPE Removal
 * Added Screen for putting on PPE
